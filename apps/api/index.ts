@@ -5,6 +5,8 @@ const app = express();
 import { prismaClient } from "store/client";
 import { AuthInput } from "./types";
 import { authMiddleware } from "./middleware";
+import { config } from "dotenv";
+config();
 
 app.use(express.json());
 
