@@ -1,5 +1,5 @@
 import {prismaClient} from 'store/client'
-import { xAdd, xAddBulk } from 'redisstream/client';
+import { xAddBulk } from 'redisstream/client';
 
 async function main() {
     let websites = await prismaClient.website.findMany({
@@ -8,6 +8,8 @@ async function main() {
             id: true
         }
     });
+
+    console.log("Websites to be added to Redis Stream:", websites.length);
 
     await xAddBulk(websites.map(website => ({
         url: website.url,
