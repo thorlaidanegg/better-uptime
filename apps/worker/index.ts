@@ -2,11 +2,14 @@ import axios from "axios";
 import { xAckBulk, xReadGroup } from "redisstream/client";
 import { prismaClient } from "store/client";
 
-const REGION_ID = process.env.REGION_ID!;
-const WORKER_ID = process.env.WORKER_ID!;
+const REGION_ID =
+  process.env.REGION_ID! || "38361d6a-50be-4eb8-a1d1-0228889415db";
+//924e3581-f955-49a9-bf95-8731719b8e41 | india
+// 38361d6a-50be-4eb8-a1d1-0228889415db | usa 
+const WORKER_ID = process.env.WORKER_ID! || "1";
 
 if (!REGION_ID) {
-  throw new Error("Region not provided");
+  throw new Error("Region not provided"); 
 }
 
 if (!WORKER_ID) {
@@ -20,6 +23,8 @@ async function main() {
     if (!response) {
       continue;
     }
+
+    console.log(`Received ${response.length} messages`);
 
     let promises = response.map(({ message }) =>
       fetchWebsite(message.url, message.id)
