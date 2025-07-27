@@ -6,9 +6,13 @@ import { prismaClient } from "store/client";
 import { AuthInput } from "./types";
 import { authMiddleware } from "./middleware";
 import { config } from "dotenv";
+import cors from 'cors'; 
 config();
 
 app.use(express.json());
+app.use(cors({
+    origin: "http://localhost:3000"
+}))
 
 app.post("/website", authMiddleware, async (req, res) => {
     if (!req.body.url) {
@@ -39,7 +43,7 @@ app.get("/status/:websiteId", authMiddleware, async (req, res) => {
                 orderBy: [{
                     createdAt: 'desc',
                 }],
-                take: 1
+                take: 10
             }
         }
     })
@@ -114,3 +118,25 @@ app.post("/user/signin", async (req, res) => {
 app.listen(process.env.PORT || 3001, () => {
     console.log(`Server is running on port ${process.env.PORT || 3001}`);
 });
+
+
+app.get("/websites", authMiddleware, async (req, res) => {
+
+    const websites = await prismaClient.website.findMany({
+        where: {
+            user_id: req.userId!
+        },
+        include: {
+            ticks: {
+                orderBy: [{
+                    createdAt: 'desc',
+                }],
+                take: 1
+            }
+        }
+    })
+
+    res.json(websites);
+
+})
+
