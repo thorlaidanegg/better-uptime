@@ -130,12 +130,12 @@ export default function LandingPage() {
           </Link>
         </nav>
         <div className="flex items-center gap-2">
-           {isAuthenticated ? (
+          {isAuthenticated ? (
             <>
               <Button
                 variant="ghost"
                 size="sm"
-                className="hidden md:inline-flex text-gray-300 hover:text-white hover:bg-gray-800"
+                className="hidden md:inline-flex text-white hover:text-white bg-green-600 hover:bg-green-700 hover:cursor-pointer"
                 onClick={() => Router.push("/dashboard")}
               >
                 Dashboard
@@ -143,7 +143,7 @@ export default function LandingPage() {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-gray-300 hover:text-white hover:bg-gray-800"
+                className="hover:cursor-pointer hover:text-white text-white hover:bg-red-500 bg-red-600"
                 onClick={() => {
                   localStorage.removeItem("token");
                   setIsAuthenticated(false);
@@ -216,6 +216,7 @@ export default function LandingPage() {
                   <Button
                     size="lg"
                     className="bg-green-600 hover:bg-green-700 text-white w-full sm:w-auto"
+                    onClick={() => setShowSignUp(true)}
                   >
                     Start Monitoring Free
                     <ArrowRight className="ml-2 h-4 w-4" />
